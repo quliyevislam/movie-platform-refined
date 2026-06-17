@@ -45,8 +45,17 @@ public sealed class Review : BaseEntity<ReviewId>
 			DateTimeOffset.UtcNow));
 	}
 
-	internal void UpdateScore(Score newScore)
+	internal Result UpdateScore(int score)
 	{
-		Score = newScore;
+		Result<Score> scoreResult = Score.Create(score);
+
+		if (scoreResult.IsFailure)
+		{
+			return Result.Failure(scoreResult.Errors);
+		}
+
+		Score = scoreResult.Value;
+
+		return Result.Success();
 	}
 }
