@@ -6,9 +6,19 @@ public static class MovieErrors
 {
 	public static class MovieId
 	{
-		public static readonly Error Invalid = Error.Validation(
-			"Movie.MovieId.Invalid",
-			"The movie id is invalid."
+		public static readonly Error InvalidFormat = Error.Validation(
+			"Movie.MovieId.InvalidFormat",
+			"The movie id format is invalid."
+		);
+
+		public static readonly Error Required = Error.Validation(
+			"Movie.MovieId.Required",
+			"The movie id is required."
+		);
+
+		public static readonly Error Empty = Error.Validation(
+			"Movie.MovieId.Empty",
+			"The movie id cannot be empty"
 		);
 	}
 
