@@ -73,8 +73,7 @@ public static class MovieErrors
 	{
 		public static readonly Error OutOfRange = Error.Validation(
 			"Movie.AverageScore.OutOfRange",
-			"The average score must be 0 or between"
-			+ $" {MovieConstants.AverageScore.MinScore} and {MovieConstants.AverageScore.MaxScore}."
+			$"The average score must be 0 or between {MovieConstants.AverageScore.MinScore} and {MovieConstants.AverageScore.MaxScore}."
 		);
 	}
 
@@ -103,8 +102,7 @@ public static class MovieErrors
 	{
 		public static readonly Error OutOfRange = Error.Validation(
 			"Movie.Score.OutOfRange",
-			"The score must be between"
-			+ $" {MovieConstants.Score.MinScore} and {MovieConstants.Score.MaxScore}."
+			$"The score must be between {MovieConstants.Score.MinScore} and {MovieConstants.Score.MaxScore}."
 		);
 	}
 
