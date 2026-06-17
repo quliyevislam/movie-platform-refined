@@ -1,0 +1,5 @@
+<Solution>
+	<Folder Name="/src/">
+		<Project Path="src/MoviePlatform.Domain/MoviePlatform.Domain.csproj" />
+	</Folder>
+</Solution>
