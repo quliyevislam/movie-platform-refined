@@ -74,7 +74,7 @@ public static class MovieErrors
 		public static readonly Error OutOfRange = Error.Validation(
 			"Movie.AverageScore.OutOfRange",
 			"The average score must be 0 or between"
-			+ $" {MovieConstants.Score.MinScore} and {MovieConstants.Score.MaxScore}."
+			+ $" {MovieConstants.AverageScore.MinScore} and {MovieConstants.AverageScore.MaxScore}."
 		);
 	}
 
@@ -91,6 +91,11 @@ public static class MovieErrors
 		public static readonly Error Invalid = Error.Validation(
 			"Movie.ReviewId.Invalid",
 			"The review id is invalid."
+		);
+
+		public static readonly Error Empty = Error.Validation(
+			"Movie.ReviewId.Empty",
+			"The review id cannot be empty"
 		);
 	}
 
@@ -121,6 +126,11 @@ public static class MovieErrors
 		public static readonly Error Invalid = Error.Validation(
 			"Movie.CommentId.Invalid",
 			"The comment id is invalid."
+		);
+
+		public static readonly Error Empty = Error.Validation(
+			"Movie.CommentId.Empty",
+			"The comment id cannot be empty"
 		);
 	}
 

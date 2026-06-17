@@ -14,11 +14,17 @@ public static class MovieConstants
 
 	public static class Score
 	{
+		public static readonly int MinScore = 1;
+		public static readonly int MaxScore = 5;
+	}
+
+	public static class AverageScore
+	{
 		public static readonly int MaxDigitsPrecision = 2;
 		public static readonly int DecimalPlacesScale = 1;
 
-		public static readonly int MinScore = 1;
-		public static readonly int MaxScore = 5;
+		public static readonly double MinScore = 1.0D;
+		public static readonly double MaxScore = 5.0D;
 	}
 
 	public static class Content
