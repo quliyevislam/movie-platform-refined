@@ -102,7 +102,7 @@ public sealed class Movie : AggregateRoot<MovieId>
 		string? newDescription,
 		string? newGenre,
 		DateOnly newReleaseDate,
-		DateTime currentUtcTime)
+		DateTimeOffset currentUtcTime)
 	{
 		Result<Title> newTitleResult = Title.Create(newTitle);
 
