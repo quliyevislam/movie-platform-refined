@@ -34,8 +34,15 @@ public readonly record struct Genre
 		return Result.Success<Genre>(new(genreType));
 	}
 
-	public static Genre FromPersistence(GenreType value)
+	public static Genre FromPersistence(string value)
 	{
-		return new(value);
+		string trimmedValue = value.Trim();
+
+		if (!Enum.TryParse<GenreType>(trimmedValue, true, out var genreType) || !Enum.IsDefined(typeof(GenreType), genreType))
+		{
+			return new(GenreType.Unknown);
+		}
+
+		return new(genreType);
 	}
 }
