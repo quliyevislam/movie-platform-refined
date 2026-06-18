@@ -67,7 +67,7 @@ internal sealed class MovieConfiguration : IEntityTypeConfiguration<Movie>
 			.Property(movie => movie.Genre)
 			.HasColumnName("genre")
 			.HasConversion(
-				genre => genre.Value,
+				genre => genre.Value.ToString(),
 				value => Genre.FromPersistence(value));
 
 		builder
