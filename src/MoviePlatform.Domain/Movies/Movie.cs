@@ -53,41 +53,18 @@ public sealed class Movie : AggregateRoot<MovieId>
 		DateTimeOffset currentUtcTime)
 	{
 		Result<UserId> userIdResult = UserId.Create(userId);
-
-		if (userIdResult.IsFailure)
-		{
-			return Result.Failure<Movie>(userIdResult.Errors);
-		}
-
 		Result<Title> titleResult = Title.Create(title);
-
-		if (titleResult.IsFailure)
-		{
-			return Result.Failure<Movie>(titleResult.Errors);
-		}
-
 		Result<Description> descriptionResult = Description.Create(description);
-
-		if (descriptionResult.IsFailure)
-		{
-			return Result.Failure<Movie>(descriptionResult.Errors);
-		}
-
 		Result<Genre> genreResult = Genre.Create(genre);
-
-		if (genreResult.IsFailure)
-		{
-			return Result.Failure<Movie>(genreResult.Errors);
-		}
-
 		Result<ReleaseDate> releaseDateResult = ReleaseDate.Create(releaseDate, currentUtcTime);
+		Result result = Result.Combine([
+			userIdResult,
+			titleResult,
+			descriptionResult,
+			genreResult,
+			releaseDateResult]);
 
-		if (releaseDateResult.IsFailure)
-		{
-			return Result.Failure<Movie>(releaseDateResult.Errors);
-		}
-
-		return Result.Success<Movie>(new(
+		return result.IsFailure ? Result.Failure<Movie>(result.Errors) : Result.Success<Movie>(new(
 			MovieId.Create(Guid.NewGuid()).Value,
 			userIdResult.Value,
 			titleResult.Value,
@@ -105,31 +82,19 @@ public sealed class Movie : AggregateRoot<MovieId>
 		DateTimeOffset currentUtcTime)
 	{
 		Result<Title> newTitleResult = Title.Create(newTitle);
-
-		if (newTitleResult.IsFailure)
-		{
-			return Result.Failure(newTitleResult.Errors);
-		}
-
 		Result<Description> newDescriptionResult = Description.Create(newDescription);
-
-		if (newDescriptionResult.IsFailure)
-		{
-			return Result.Failure(newDescriptionResult.Errors);
-		}
-
 		Result<Genre> newGenreResult = Genre.Create(newGenre);
-
-		if (newGenreResult.IsFailure)
-		{
-			return Result.Failure(newGenreResult.Errors);
-		}
-
 		Result<ReleaseDate> newReleaseDateResult = ReleaseDate.Create(newReleaseDate, currentUtcTime);
 
-		if (newReleaseDateResult.IsFailure)
+		Result result = Result.Combine([
+			newTitleResult,
+			newDescriptionResult,
+			newGenreResult,
+			newReleaseDateResult]);
+
+		if (result.IsFailure)
 		{
-			return Result.Failure(newReleaseDateResult.Errors);
+			return Result.Failure(result.Errors);
 		}
 
 		Title = newTitleResult.Value;

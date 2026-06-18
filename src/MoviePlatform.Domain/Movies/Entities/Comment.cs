@@ -25,20 +25,10 @@ public sealed class Comment : BaseEntity<CommentId>
 	public static Result<Comment> Create(Guid userId, string? content, DateTimeOffset currentUtcTime)
 	{
 		Result<UserId> userIdResult = UserId.Create(userId);
-
-		if (userIdResult.IsFailure)
-		{
-			return Result.Failure<Comment>(userIdResult.Errors);
-		}
-
 		Result<Content> contentResult = Content.Create(content);
+		Result result = Result.Combine([userIdResult, contentResult]);
 
-		if (contentResult.IsFailure)
-		{
-			return Result.Failure<Comment>(contentResult.Errors);
-		}
-
-		return Result.Success<Comment>(new(
+		return result.IsFailure ? Result.Failure<Comment>(result.Errors) : Result.Success<Comment>(new(
 			CommentId.Create(Guid.NewGuid()).Value,
 			userIdResult.Value,
 			contentResult.Value,

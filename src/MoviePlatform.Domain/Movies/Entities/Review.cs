@@ -25,20 +25,10 @@ public sealed class Review : BaseEntity<ReviewId>
 	public static Result<Review> Create(Guid userId, int score, DateTimeOffset currentUtcTime)
 	{
 		Result<UserId> userIdResult = UserId.Create(userId);
-
-		if (userIdResult.IsFailure)
-		{
-			return Result.Failure<Review>(userIdResult.Errors);
-		}
-
 		Result<Score> scoreResult = Score.Create(score);
+		Result result = Result.Combine([userIdResult, scoreResult]);
 
-		if (scoreResult.IsFailure)
-		{
-			return Result.Failure<Review>(scoreResult.Errors);
-		}
-
-		return Result.Success<Review>(new(
+		return result.IsFailure ? Result.Failure<Review>(result.Errors) : Result.Success<Review>(new(
 			ReviewId.Create(Guid.NewGuid()).Value,
 			userIdResult.Value,
 			scoreResult.Value,

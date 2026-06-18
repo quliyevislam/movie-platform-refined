@@ -29,7 +29,6 @@ public readonly record struct Password
 
 		List<Error> errors = new();
 
-
 		if (!Regex.IsMatch(value, UserConstants.Password.RequireNoSpace))
 		{
 			errors.Add(UserErrors.Password.SpacesNotAllowed);
@@ -55,11 +54,6 @@ public readonly record struct Password
 			errors.Add(UserErrors.Password.DigitRequired);
 		}
 
-		if (errors.Count != 0)
-		{
-			return Result.Failure<Password>(errors);
-		}
-
-		return Result.Success<Password>(new(value));
+		return errors.Count == 0 ? Result.Success<Password>(new(value)) : Result.Failure<Password>(errors);
 	}
 }

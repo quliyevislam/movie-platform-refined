@@ -29,16 +29,18 @@ public readonly record struct Email
 			return Result.Failure<Email>(UserErrors.Email.Empty);
 		}
 
+		List<Error> errors = new();
+
 		if (trimmedValue.Length > UserConstants.Email.MaxLength)
 		{
-			return Result.Failure<Email>(UserErrors.Email.TooLong);
+			errors.Add(UserErrors.Email.TooLong);
 		}
 
 		if (!MailAddress.TryCreate(trimmedValue, out _))
 		{
-			return Result.Failure<Email>(UserErrors.Email.InvalidFormat);
+			errors.Add(UserErrors.Email.InvalidFormat);
 		}
 
-		return Result.Success<Email>(new(trimmedValue));
+		return errors.Count == 0 ? Result.Success<Email>(new(trimmedValue)) : Result.Failure<Email>(errors);
 	}
 }

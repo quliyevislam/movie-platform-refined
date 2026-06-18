@@ -26,6 +26,21 @@ public class Result
 		_errors.AddRange(errorList);
 	}
 
+	public static Result Combine(IEnumerable<Result> results)
+	{
+		List<Error> errors = new();
+
+		foreach (Result result in results)
+		{
+			if (result.IsFailure)
+			{
+				errors.AddRange(result.Errors);
+			}
+		}
+
+		return errors.Count == 0 ? Success() : Failure(errors);
+	}
+
 	public static Result Success() => new(true, []);
 	public static Result Failure(Error error) => new(false, [error]);
 	public static Result Failure(IEnumerable<Error> errors) => new(false, errors);
