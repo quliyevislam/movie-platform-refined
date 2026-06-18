@@ -6,7 +6,6 @@ public interface IMovieWriteRepository
 {
 	Task<Movie?> GetByIdAsync(MovieId movieId, CancellationToken cancellationToken = default);
 	Task<Movie?> GetByIdWithCommentsAsync(MovieId movieId, CancellationToken cancellationToken = default);
-	void Delete(Movie movie);
 	void Add(Movie movie);
-	void Update(Movie movie);
+	void Remove(Movie movie);
 }
