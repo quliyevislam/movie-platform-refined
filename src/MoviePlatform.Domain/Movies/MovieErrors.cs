@@ -80,7 +80,7 @@ public static class MovieErrors
 	public static class ReviewCount
 	{
 		public static readonly Error Negative = Error.Validation(
-			"Moive.ReviewCount.Negative",
+			"Movie.ReviewCount.Negative",
 			"The review count cannot be negative."
 		);
 	}
@@ -136,7 +136,7 @@ public static class MovieErrors
 	{
 		public static readonly Error Required = Error.Validation(
 			"Movie.Content.Required",
-			"The content is rquired."
+			"The content is required."
 		);
 
 		public static readonly Error Empty = Error.Validation(

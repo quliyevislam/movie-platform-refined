@@ -1,5 +1,4 @@
 using MoviePlatform.Domain.Common;
-using MoviePlatform.Domain.Movies;
 
 namespace MoviePlatform.Domain.Movies.ValueObjects;
 

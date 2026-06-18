@@ -1,5 +1,4 @@
 using MoviePlatform.Domain.Common;
-using MoviePlatform.Domain.Users;
 using System.Text.RegularExpressions;
 
 namespace MoviePlatform.Domain.Users.ValueObjects;

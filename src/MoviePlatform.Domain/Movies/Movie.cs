@@ -1,5 +1,4 @@
 using MoviePlatform.Domain.Common;
-using MoviePlatform.Domain.Movies.Enums;
 using MoviePlatform.Domain.Movies.Entities;
 using MoviePlatform.Domain.Movies.ValueObjects;
 using MoviePlatform.Domain.Users.ValueObjects;
