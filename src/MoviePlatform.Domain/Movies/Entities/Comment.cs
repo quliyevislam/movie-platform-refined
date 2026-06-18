@@ -22,7 +22,7 @@ public sealed class Comment : BaseEntity<CommentId>
 		CreatedAtUtc = createdAtUtc;
 	}
 
-	public static Result<Comment> Create(Guid userId, string? content)
+	public static Result<Comment> Create(Guid userId, string? content, DateTimeOffset currentUtcTime)
 	{
 		Result<UserId> userIdResult = UserId.Create(userId);
 
@@ -42,6 +42,6 @@ public sealed class Comment : BaseEntity<CommentId>
 			CommentId.Create(Guid.NewGuid()).Value,
 			userIdResult.Value,
 			contentResult.Value,
-			DateTimeOffset.UtcNow));
+			currentUtcTime));
 	}
 }

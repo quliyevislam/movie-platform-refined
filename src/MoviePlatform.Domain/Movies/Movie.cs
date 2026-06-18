@@ -94,7 +94,7 @@ public sealed class Movie : AggregateRoot<MovieId>
 			descriptionResult.Value,
 			genreResult.Value,
 			releaseDateResult.Value,
-			DateTimeOffset.UtcNow));
+			currentUtcTime));
 	}
 
 	public Result Update(

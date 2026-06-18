@@ -22,7 +22,7 @@ public sealed class Review : BaseEntity<ReviewId>
 		CreatedAtUtc = createdAtUtc;
 	}
 
-	public static Result<Review> Create(Guid userId, int score)
+	public static Result<Review> Create(Guid userId, int score, DateTimeOffset currentUtcTime)
 	{
 		Result<UserId> userIdResult = UserId.Create(userId);
 
@@ -42,7 +42,7 @@ public sealed class Review : BaseEntity<ReviewId>
 			ReviewId.Create(Guid.NewGuid()).Value,
 			userIdResult.Value,
 			scoreResult.Value,
-			DateTimeOffset.UtcNow));
+			currentUtcTime));
 	}
 
 	internal void UpdateScore(Score score)
