@@ -156,60 +156,37 @@ public sealed class Movie : AggregateRoot<MovieId>
 		AverageScore = AverageScore.Create(totalScoreSum / totalReviewCount).Value;
 	}
 
-	public Result SubmitReview(Guid userId, int score)
+	public void SubmitReview(Review newReview)
 	{
-		Review? existingReview = _reviews.FirstOrDefault(review => review.UserId.Value == userId);
+		Review? existingReview = _reviews.FirstOrDefault(review => review.UserId == newReview.UserId);
 
 		if (existingReview is null)
 		{
-			Result<Review> newReviewResult = Review.Create(userId, score);
-
-			if (newReviewResult.IsFailure)
-			{
-				return Result.Failure(newReviewResult.Errors);
-			}
-
-			_reviews.Add(newReviewResult.Value);
+			_reviews.Add(newReview);
 		}
 		else
 		{
-			Result result = existingReview.UpdateScore(score);
-
-			if (result.IsFailure)
-			{
-				return Result.Failure(result.Errors);
-			}
+			existingReview.UpdateScore(newReview.Score);
 		}
 
 		RecalculateAverageRating();
-
-		return Result.Success();
 	}
 
-	public Result AddComment(Guid userId, string content)
+	public void AddComment(Comment newComment)
 	{
-		Result<Comment>	newCommentResult = Comment.Create(userId, content);
-
-		if (newCommentResult.IsFailure)
-		{
-			return Result.Failure(newCommentResult.Errors);
-		}
-
-		_comments.Add(newCommentResult.Value);
-
-		return Result.Success();
+		_comments.Add(newComment);
 	}
 
-	public Result DeleteComment(Guid commentId, Guid userId)
+	public Result DeleteComment(CommentId commentId, UserId userId)
 	{
-		Comment? existingComment = _comments.FirstOrDefault(comment => comment.Id.Value == commentId);
+		Comment? existingComment = _comments.FirstOrDefault(comment => comment.Id == commentId);
 
 		if (existingComment is null)
 		{
 			return Result.Failure(MovieErrors.Comment.NotFound);
 		}
 
-		if (existingComment.UserId.Value != userId)
+		if (existingComment.UserId != userId)
 		{
 			return Result.Failure(MovieErrors.Comment.Forbidden);
 		}
