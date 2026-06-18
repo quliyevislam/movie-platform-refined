@@ -34,4 +34,9 @@ public readonly record struct Content
 
 			return Result.Success<Content>(new(trimmedValue));
 	}
+
+	public static Content FromPersistence(string value)
+	{
+		return new(value);
+	}
 }

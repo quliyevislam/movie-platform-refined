@@ -29,4 +29,9 @@ public readonly record struct AverageScore
 
 		return Result.Success<AverageScore>(new(roundedValue));
 	}
+
+	public static AverageScore FromPersistence(double value)
+	{
+		return new(value);
+	}
 }

@@ -22,4 +22,9 @@ public readonly record struct UserId
 
 		return Result.Success<UserId>(new(value));
 	}
+
+	public static UserId FromPersistence(Guid value)
+	{
+		return new(value);
+	}
 }

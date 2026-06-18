@@ -27,4 +27,9 @@ public readonly record struct PasswordHash
 
 		return Result.Success<PasswordHash>(new(value));
 	}
+
+	public static PasswordHash FromPersistence(string value)
+	{
+		return new(value);
+	}
 }

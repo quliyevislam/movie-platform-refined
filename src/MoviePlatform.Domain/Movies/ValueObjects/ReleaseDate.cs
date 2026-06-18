@@ -22,4 +22,9 @@ public readonly record struct ReleaseDate
 
 		return Result.Success<ReleaseDate>(new(value));
 	}
+
+	public static ReleaseDate FromPersistence(DateOnly value)
+	{
+		return new(value);
+	}
 }

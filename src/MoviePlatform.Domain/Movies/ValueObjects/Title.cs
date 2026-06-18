@@ -34,4 +34,9 @@ public readonly record struct Title
 
 		return Result.Success<Title>(new(trimmedValue));
 	}
+
+	public static Title FromPersistence(string value)
+	{
+		return new(value);
+	}
 }

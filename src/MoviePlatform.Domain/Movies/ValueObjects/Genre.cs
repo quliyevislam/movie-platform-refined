@@ -33,4 +33,9 @@ public readonly record struct Genre
 
 		return Result.Success<Genre>(new(genreType));
 	}
+
+	public static Genre FromPersistence(GenreType value)
+	{
+		return new(value);
+	}
 }

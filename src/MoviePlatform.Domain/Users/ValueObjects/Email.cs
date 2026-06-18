@@ -42,4 +42,9 @@ public readonly record struct Email
 
 		return errors.Count == 0 ? Result.Success<Email>(new(trimmedValue)) : Result.Failure<Email>(errors);
 	}
+
+	public static Email FromPersistence(string value)
+	{
+		return new(value);
+	}
 }

@@ -22,4 +22,9 @@ public readonly record struct Score
 
 		return Result.Success<Score>(new(value));
 	}
+
+	public static Score FromPersistence(int value)
+	{
+		return new(value);
+	}
 }

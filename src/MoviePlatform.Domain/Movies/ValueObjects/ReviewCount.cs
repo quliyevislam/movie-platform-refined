@@ -22,4 +22,9 @@ public readonly record struct ReviewCount
 
 		return Result.Success<ReviewCount>(new(value));
 	}
+
+	public static ReviewCount FromPersistence(int value)
+	{
+		return new(value);
+	}
 }

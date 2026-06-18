@@ -22,4 +22,9 @@ public readonly record struct MovieId
 
 		return Result.Success<MovieId>(new(value));
 	}
+
+	public static MovieId FromPersistence(Guid value)
+	{
+		return new(value);
+	}
 }

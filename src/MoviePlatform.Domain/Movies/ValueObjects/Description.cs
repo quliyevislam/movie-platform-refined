@@ -24,4 +24,9 @@ public readonly record struct Description
 
 		return Result.Success<Description>(new(trimmedValue));
 	}
+
+	public static Description FromPersistence(string? value)
+	{
+		return new(value);
+	}
 }

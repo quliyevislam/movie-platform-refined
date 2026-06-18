@@ -22,4 +22,9 @@ public readonly record struct CommentId
 
 		return Result.Success<CommentId>(new(value));
 	}
+
+	public static CommentId FromPersistence(Guid value)
+	{
+		return new(value);
+	}
 }
