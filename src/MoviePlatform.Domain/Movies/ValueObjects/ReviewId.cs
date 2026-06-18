@@ -23,7 +23,6 @@ public readonly record struct ReviewId
 		return Result.Success<ReviewId>(new(value));
 	}
 
-
 	public static ReviewId FromPersistence(Guid value)
 	{
 		return new(value);
