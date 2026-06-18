@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using MoviePlatform.Application.Common.Authentication;
+using MoviePlatform.Application.Common.Data;
 using MoviePlatform.Infrastructure.Authentication;
 using MoviePlatform.Infrastructure.Persistence;
 
@@ -43,6 +44,8 @@ public static class DependencyInjection
 		services.AddDbContext<MoviePlatformDbContext>(
 			options => options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")
 					?? throw new InvalidOperationException("Database connection string is missing or invalid.")));
+
+		services.AddSingleton<ISqlConnectionFactory, SqlConnectionFactory>();
 
 		return services;
     }
