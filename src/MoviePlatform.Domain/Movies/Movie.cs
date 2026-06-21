@@ -43,65 +43,34 @@ public sealed class Movie : AggregateRoot<MovieId>
 		CreatedAtUtc = createdAtUtc;
 	}
 
-	public static Result<Movie> Create(
-		Guid userId,
-		string? title,
-		string? description,
-		string? genre,
-		DateOnly releaseDate,
+	public static Movie Create(
+		UserId userId,
+		Title title,
+		Description description,
+		Genre genre,
+		ReleaseDate releaseDate,
 		DateTimeOffset currentUtcTime)
 	{
-		Result<UserId> userIdResult = UserId.Create(userId);
-		Result<Title> titleResult = Title.Create(title);
-		Result<Description> descriptionResult = Description.Create(description);
-		Result<Genre> genreResult = Genre.Create(genre);
-		Result<ReleaseDate> releaseDateResult = ReleaseDate.Create(releaseDate, currentUtcTime);
-		Result result = Result.Combine([
-			userIdResult,
-			titleResult,
-			descriptionResult,
-			genreResult,
-			releaseDateResult]);
-
-		return result.IsFailure ? Result.Failure<Movie>(result.Errors) : Result.Success<Movie>(new(
+		return new(
 			MovieId.Create(Guid.NewGuid()).Value,
-			userIdResult.Value,
-			titleResult.Value,
-			descriptionResult.Value,
-			genreResult.Value,
-			releaseDateResult.Value,
-			currentUtcTime));
+			userId,
+			title,
+			description,
+			genre,
+			releaseDate,
+			currentUtcTime);
 	}
 
-	public Result Update(
-		string? newTitle,
-		string? newDescription,
-		string? newGenre,
-		DateOnly newReleaseDate,
-		DateTimeOffset currentUtcTime)
+	public void Update(
+		Title newTitle,
+		Description newDescription,
+		Genre newGenre,
+		ReleaseDate newReleaseDate)
 	{
-		Result<Title> newTitleResult = Title.Create(newTitle);
-		Result<Description> newDescriptionResult = Description.Create(newDescription);
-		Result<Genre> newGenreResult = Genre.Create(newGenre);
-		Result<ReleaseDate> newReleaseDateResult = ReleaseDate.Create(newReleaseDate, currentUtcTime);
-
-		Result result = Result.Combine([
-			newTitleResult,
-			newDescriptionResult,
-			newGenreResult,
-			newReleaseDateResult]);
-
-		if (result.IsFailure)
-		{
-			return Result.Failure(result.Errors);
-		}
-
-		Title = newTitleResult.Value;
-		Description = newDescriptionResult.Value;
-		Genre = newGenreResult.Value;
-		ReleaseDate = newReleaseDateResult.Value;
-
-		return Result.Success();
+		Title = newTitle;
+		Description = newDescription;
+		Genre = newGenre;
+		ReleaseDate = newReleaseDate;
 	}
 
 	private void RecalculateAverageRating()

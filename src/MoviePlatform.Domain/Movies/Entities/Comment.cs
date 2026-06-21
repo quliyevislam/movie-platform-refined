@@ -22,16 +22,12 @@ public sealed class Comment : BaseEntity<CommentId>
 		CreatedAtUtc = createdAtUtc;
 	}
 
-	public static Result<Comment> Create(Guid userId, string? content, DateTimeOffset currentUtcTime)
+	public static Comment Create(UserId userId, Content content, DateTimeOffset currentUtcTime)
 	{
-		Result<UserId> userIdResult = UserId.Create(userId);
-		Result<Content> contentResult = Content.Create(content);
-		Result result = Result.Combine([userIdResult, contentResult]);
-
-		return result.IsFailure ? Result.Failure<Comment>(result.Errors) : Result.Success<Comment>(new(
+		return new(
 			CommentId.Create(Guid.NewGuid()).Value,
-			userIdResult.Value,
-			contentResult.Value,
-			currentUtcTime));
+			userId,
+			content,
+			currentUtcTime);
 	}
 }

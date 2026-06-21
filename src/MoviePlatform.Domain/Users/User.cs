@@ -25,22 +25,17 @@ public sealed class User : AggregateRoot<UserId>
 		CreatedAtUtc = createdAtUtc;
 	}
 
-	public static Result<User> Create(
-		string? name,
-		string? email,
-		string? passwordHash,
+	public static User Create(
+		Name name,
+		Email email,
+		PasswordHash passwordHash,
 		DateTimeOffset createdAtUtc)
 	{
-		Result<Name> nameResult = Name.Create(name);
-		Result<Email> emailResult = Email.Create(email);
-		Result<PasswordHash> passwordHashResult = PasswordHash.Create(passwordHash);
-		Result result = Result.Combine([nameResult, emailResult, passwordHashResult]);
-
-		return result.IsFailure ? Result.Failure<User>(result.Errors) : Result.Success<User>(new(
+		return new(
 			UserId.Create(Guid.NewGuid()).Value,
-			nameResult.Value,
-			emailResult.Value,
-			passwordHashResult.Value,
-			createdAtUtc));
+			name,
+			email,
+			passwordHash,
+			createdAtUtc);
 	}
 }

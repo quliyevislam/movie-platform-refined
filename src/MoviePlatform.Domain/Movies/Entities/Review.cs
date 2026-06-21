@@ -22,17 +22,13 @@ public sealed class Review : BaseEntity<ReviewId>
 		CreatedAtUtc = createdAtUtc;
 	}
 
-	public static Result<Review> Create(Guid userId, int score, DateTimeOffset currentUtcTime)
+	public static Review Create(UserId userId, Score score, DateTimeOffset currentUtcTime)
 	{
-		Result<UserId> userIdResult = UserId.Create(userId);
-		Result<Score> scoreResult = Score.Create(score);
-		Result result = Result.Combine([userIdResult, scoreResult]);
-
-		return result.IsFailure ? Result.Failure<Review>(result.Errors) : Result.Success<Review>(new(
+		return new(
 			ReviewId.Create(Guid.NewGuid()).Value,
-			userIdResult.Value,
-			scoreResult.Value,
-			currentUtcTime));
+			userId,
+			score,
+			currentUtcTime);
 	}
 
 	internal void UpdateScore(Score score)

@@ -6,9 +6,9 @@ namespace MoviePlatform.Infrastructure.Authentication;
 
 internal sealed class BCryptPasswordHasher : IPasswordHasher
 {
-	public string Hash(Password password)
+	public PasswordHash Hash(Password password)
 	{
-		return BCryptNet.HashPassword(password.Value);
+		return PasswordHash.Create(BCryptNet.HashPassword(password.Value)).Value;
 	}
 
 	public bool Verify(Password password, PasswordHash passwordHash)
