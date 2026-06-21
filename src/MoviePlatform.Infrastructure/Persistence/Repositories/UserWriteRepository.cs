@@ -18,6 +18,11 @@ public sealed class UserWriteRepository : IUserWriteRepository
         return await _context.Users.FirstOrDefaultAsync(user => user.Id == userId, cancellationToken);
     }
 
+	public async Task<User?> GetByEmailAsync(Email email, CancellationToken cancellationToken = default)
+	{
+        return await _context.Users.FirstOrDefaultAsync(user => user.Email == email, cancellationToken);
+	}
+
 	public async Task<bool> IsEmailUniqueAsync(Email email, CancellationToken cancellationToken = default)
 	{
 		return !await _context.Users.AnyAsync(user => user.Email == email, cancellationToken);
