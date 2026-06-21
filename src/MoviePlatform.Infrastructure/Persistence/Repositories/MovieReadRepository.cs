@@ -15,11 +15,74 @@ public sealed class MovieReadRepository : IMovieReadRepository
 		_sqlConnectionFactory = sqlConnectionFactory;
 	}
 
-	public async Task<PagedList<MovieResponse>> GetByUserIdAsync(
-			Guid userId,
-			int page,
-			int pageSize,
-			CancellationToken cancellationToken = default)
+	public async Task<MovieResponse?> GetByIdAndUserIdAsync(
+		Guid movieId,
+		Guid userId,
+		CancellationToken cancellationToken = default)
+	{
+		using IDbConnection connection = _sqlConnectionFactory.CreateConnection();
+
+		const string sql = """
+			SELECT
+				movie_id		AS MovieId,
+				user_id			AS UserId,
+				title			AS Title,
+				description		AS Description,
+				genre			AS Genre,
+				release_date	AS ReleaseDate,
+				average_score	AS AverageScore,
+				review_count	AS ReviewCount,
+				created_at_utc	AS CreatedAtUtc
+			FROM movies
+			WHERE movie_id = @MovieId AND user_id = @UserId;
+			""";
+
+		var parameters = new { MovieId = movieId, UserId = userId };
+
+		CommandDefinition command = new CommandDefinition(
+			sql,
+			parameters,
+			cancellationToken: cancellationToken);
+
+		return await connection.QuerySingleOrDefaultAsync<MovieResponse>(command);
+	}
+
+	public async Task<MovieResponse?> GetByIdAsync(
+		Guid movieId,
+		CancellationToken cancellationToken = default)
+	{
+		using IDbConnection connection = _sqlConnectionFactory.CreateConnection();
+
+		const string sql = """
+			SELECT
+				movie_id		AS MovieId,
+				user_id			AS UserId,
+				title			AS Title,
+				description		AS Description,
+				genre			AS Genre,
+				release_date	AS ReleaseDate,
+				average_score	AS AverageScore,
+				review_count	AS ReviewCount,
+				created_at_utc	AS CreatedAtUtc
+			FROM movies
+			WHERE movie_id = @MovieId;
+			""";
+
+		var parameters = new { MovieId = movieId };
+
+		CommandDefinition command = new CommandDefinition(
+			sql,
+			parameters,
+			cancellationToken: cancellationToken);
+
+		return await connection.QuerySingleOrDefaultAsync<MovieResponse>(command);
+	}
+
+	public async Task<PagedList<MovieResponse>> GetPagedByUserIdAsync(
+		Guid userId,
+		int page,
+		int pageSize,
+		CancellationToken cancellationToken = default)
 	{
 		using IDbConnection connection = _sqlConnectionFactory.CreateConnection();
 
@@ -48,12 +111,60 @@ public sealed class MovieReadRepository : IMovieReadRepository
 			Offset = (page - 1) * pageSize
 		};
 
-		IEnumerable<MovieReadRow> rows = await connection.QueryAsync<MovieReadRow>(sql, parameters);
+		CommandDefinition command = new CommandDefinition(
+			sql,
+			parameters,
+			cancellationToken: cancellationToken);
+		IEnumerable<MovieReadRow> rows = await connection.QueryAsync<MovieReadRow>(command);
 
-		List<MovieReadRow> rowList = rows.ToList();
+		return MapToPagedList(rows.ToList(), page, pageSize);
+	}
 
+	public async Task<PagedList<MovieResponse>> GetPagedAsync(
+		int page,
+		int pageSize,
+		CancellationToken cancellationToken = default)
+	{
+		using IDbConnection connection = _sqlConnectionFactory.CreateConnection();
+
+		const string sql = """
+			SELECT
+				movie_id		AS MovieId,
+				user_id			AS UserId,
+				title			AS Title,
+				description		AS Description,
+				genre			AS Genre,
+				release_date	AS ReleaseDate,
+				average_score	AS AverageScore,
+				review_count	AS ReviewCount,
+				created_at_utc	AS CreatedAtUtc,
+				COUNT(*) OVER()	AS TotalCount
+			FROM movies
+			ORDER BY created_at_utc DESC
+			LIMIT @PageSize OFFSET @Offset;
+			""";
+
+		var parameters = new
+		{
+			PageSize = pageSize,
+			Offset = (page - 1) * pageSize
+		};
+
+		CommandDefinition command = new CommandDefinition(
+			sql,
+			parameters,
+			cancellationToken: cancellationToken);
+		IEnumerable<MovieReadRow> rows = await connection.QueryAsync<MovieReadRow>(command);
+
+		return MapToPagedList(rows.ToList(), page, pageSize);
+	}
+
+	private static PagedList<MovieResponse> MapToPagedList(
+		List<MovieReadRow> rowList,
+		int page,
+		int pageSize)
+	{
 		int totalCount = rowList.Count > 0 ? rowList[0].TotalCount : 0;
-
 		List<MovieResponse> movies = rowList
 			.Select(row => new MovieResponse(
 				row.MovieId,
