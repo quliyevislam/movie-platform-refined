@@ -4,10 +4,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using MoviePlatform.Application.Common.Authentication;
+using MoviePlatform.Domain.Users;
+using MoviePlatform.Domain.Movies;
+using MoviePlatform.Application.Movies;
 using MoviePlatform.Application.Common.Data;
+using MoviePlatform.Application.Common.Authentication;
 using MoviePlatform.Infrastructure.Authentication;
 using MoviePlatform.Infrastructure.Persistence;
+using MoviePlatform.Infrastructure.Persistence.Repositories;
 
 namespace MoviePlatform.Infrastructure;
 
@@ -46,6 +50,10 @@ public static class DependencyInjection
 					?? throw new InvalidOperationException("Database connection string is missing or invalid.")));
 
 		services.AddSingleton<ISqlConnectionFactory, SqlConnectionFactory>();
+		services.AddScoped<IUnitOfWork, UnitOfWork>();
+		services.AddScoped<IUserWriteRepository, UserWriteRepository>();
+		services.AddScoped<IMovieWriteRepository, MovieWriteRepository>();
+		services.AddScoped<IMovieReadRepository, MovieReadRepository>();
 
 		return services;
     }
