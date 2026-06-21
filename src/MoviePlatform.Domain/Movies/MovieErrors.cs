@@ -4,6 +4,16 @@ namespace MoviePlatform.Domain.Movies;
 
 public static class MovieErrors
 {
+	public static readonly Error NotFound = Error.NotFound(
+		"Movie.NotFound",
+		"The movie with the specified id was not found."
+	);
+
+	public static readonly Error Forbidden = Error.Forbidden(
+		"Movie.Forbidden",
+		"You do not have permission to modify this movie."
+	);
+
 	public static class MovieId
 	{
 		public static readonly Error InvalidFormat = Error.Validation(
