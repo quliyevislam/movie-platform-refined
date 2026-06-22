@@ -1,5 +1,6 @@
 <Solution>
 	<Folder Name="/src/">
+		<Project Path="src/MoviePlatform.Api/MoviePlatform.Api.csproj" />
 		<Project Path="src/MoviePlatform.Application/MoviePlatform.Application.csproj" />
 		<Project Path="src/MoviePlatform.Domain/MoviePlatform.Domain.csproj" />
 		<Project Path="src/MoviePlatform.Infrastructure/MoviePlatform.Infrastructure.csproj" />
