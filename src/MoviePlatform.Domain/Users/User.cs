@@ -5,20 +5,21 @@ namespace MoviePlatform.Domain.Users;
 
 public sealed class User : AggregateRoot<UserId>
 {
-	public Name Name { get; private set; }
-	public Email Email { get; private set; }
-	public PasswordHash PasswordHash { get; private set; }
-	public DateTimeOffset CreatedAtUtc { get; private set; }
+	public Name Name { get; private set; } = default!;
+	public Email Email { get; private set; } = default!;
+	public PasswordHash PasswordHash { get; private set; } = default!;
+	public DateTimeOffset CreatedAtUtc { get; private set; } = default!;
 
-	private User(UserId userId) : base(userId) { }
+	private User() { }
 
 	private User(
 		UserId userId,
 		Name name,
 		Email email,
 		PasswordHash passwordHash,
-		DateTimeOffset createdAtUtc) : base(userId)
+		DateTimeOffset createdAtUtc)
 	{
+		Id = userId;
 		Name = name;
 		Email = email;
 		PasswordHash = passwordHash;

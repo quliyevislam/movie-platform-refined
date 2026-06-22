@@ -7,14 +7,14 @@ namespace MoviePlatform.Domain.Movies;
 
 public sealed class Movie : AggregateRoot<MovieId>
 {
-	public UserId UserId { get; private set; }
-	public Title Title { get; private set; }
-	public Description Description { get; private set; }
-	public Genre Genre { get; private set; }
-	public ReleaseDate ReleaseDate { get; private set; }
-	public AverageScore AverageScore { get; private set; }
-	public ReviewCount ReviewCount { get; private set; }
-	public DateTimeOffset CreatedAtUtc { get; private set; }
+	public UserId UserId { get; private set; } = default!;
+	public Title Title { get; private set; } = default!;
+	public Description? Description { get; private set; }
+	public Genre Genre { get; private set; } = default!;
+	public ReleaseDate? ReleaseDate { get; private set; }
+	public AverageScore AverageScore { get; private set; } = default!;
+	public ReviewCount ReviewCount { get; private set; } = default!;
+	public DateTimeOffset CreatedAtUtc { get; private set; } = default!;
 
 	private readonly List<Review> _reviews = [];
 	private readonly List<Comment> _comments = [];
@@ -22,7 +22,7 @@ public sealed class Movie : AggregateRoot<MovieId>
 	public IReadOnlyCollection<Review> Reviews => _reviews.AsReadOnly();
 	public IReadOnlyCollection<Comment> Comments => _comments.AsReadOnly();
 
-	private Movie(MovieId movieId) : base(movieId) { }
+	private Movie() { }
 
 	private Movie(
 		MovieId movieId,
@@ -31,8 +31,9 @@ public sealed class Movie : AggregateRoot<MovieId>
 		Description description,
 		Genre genre,
 		ReleaseDate releaseDate,
-		DateTimeOffset createdAtUtc) : base(movieId)
+		DateTimeOffset createdAtUtc)
 	{
+		Id = movieId;
 		UserId = userId;
 		Title = title;
 		Description = description;

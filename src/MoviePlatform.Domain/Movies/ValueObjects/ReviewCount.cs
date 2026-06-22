@@ -2,14 +2,11 @@ using MoviePlatform.Domain.Common;
 
 namespace MoviePlatform.Domain.Movies.ValueObjects;
 
-public readonly record struct ReviewCount
+public record ReviewCount
 {
 	public int Value { get; }
 
-	public ReviewCount()
-	{
-		throw new InvalidOperationException("Instantiation via the default parameterless constructor is prohibited.");
-	}
+	private ReviewCount() { }
 
 	private ReviewCount(int value) => Value = value;
 

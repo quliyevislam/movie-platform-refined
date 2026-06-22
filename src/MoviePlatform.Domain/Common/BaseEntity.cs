@@ -1,17 +1,12 @@
 namespace MoviePlatform.Domain.Common;
 
-public abstract class BaseEntity<TId> : IEquatable<BaseEntity<TId>> where TId : struct
+public abstract class BaseEntity<TId> : IEquatable<BaseEntity<TId>>
 {
-	public TId Id { get; init; }
-
-	protected BaseEntity(TId id)
-    {
-        Id = id;
-    }
+	public TId Id { get; protected set; } = default!;
 
 	public bool Equals(BaseEntity<TId>? other)
 	{
-		if (other is null)
+		if (other is null || Id is null)
 		{
 			return false;
 		}

@@ -6,17 +6,20 @@ namespace MoviePlatform.Domain.Movies.Entities;
 
 public sealed class Review : BaseEntity<ReviewId>
 {
-	public UserId UserId { get; private set; }
-	public MovieId MovieId { get; private set; }
-	public Score Score { get; private set; }
-	public DateTimeOffset CreatedAtUtc { get; private set; }
+	public UserId UserId { get; private set; } = default!;
+	public MovieId MovieId { get; private set; } = default!;
+	public Score Score { get; private set; } = default!;
+	public DateTimeOffset CreatedAtUtc { get; private set; } = default!;
+
+	private Review() { }
 
 	private Review(
 		ReviewId reviewId,
 		UserId userId,
 		Score score,
-		DateTimeOffset createdAtUtc) : base(reviewId)
+		DateTimeOffset createdAtUtc)
 	{
+		Id = reviewId;
 		UserId = userId;
 		Score = score;
 		CreatedAtUtc = createdAtUtc;

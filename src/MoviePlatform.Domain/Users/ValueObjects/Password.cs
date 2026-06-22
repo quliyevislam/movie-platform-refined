@@ -3,14 +3,11 @@ using System.Text.RegularExpressions;
 
 namespace MoviePlatform.Domain.Users.ValueObjects;
 
-public readonly record struct Password
+public record Password
 {
-	public string Value { get; }
+	public string Value { get; } = default!;
 
-	public Password()
-	{
-		throw new InvalidOperationException("Instantiation via the default parameterless constructor is prohibited.");
-	}
+	private Password() { }
 
 	private Password(string value) => Value = value;
 

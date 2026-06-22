@@ -3,14 +3,11 @@ using System.Net.Mail;
 
 namespace MoviePlatform.Domain.Users.ValueObjects;
 
-public readonly record struct Email
+public record Email
 {
-	public string Value { get; }
+	public string Value { get; } = default!;
 
-	public Email()
-	{
-		throw new InvalidOperationException("Instantiation via the default parameterless constructor is prohibited.");
-	}
+	private Email() { }
 
 	private Email(string value) => Value = value;
 

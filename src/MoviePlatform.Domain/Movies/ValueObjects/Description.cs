@@ -2,14 +2,11 @@ using MoviePlatform.Domain.Common;
 
 namespace MoviePlatform.Domain.Movies.ValueObjects;
 
-public readonly record struct Description
+public record Description
 {
 	public string? Value { get; }
 
-	public Description()
-	{
-		throw new InvalidOperationException("Instantiation via the default parameterless constructor is prohibited.");
-	}
+	private Description() { }
 
 	private Description(string? value) => Value = value;
 

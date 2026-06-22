@@ -2,14 +2,11 @@ using MoviePlatform.Domain.Common;
 
 namespace MoviePlatform.Domain.Movies.ValueObjects;
 
-public readonly record struct ReleaseDate
+public record ReleaseDate
 {
 	public DateOnly Value { get; }
 
-	public ReleaseDate()
-	{
-		throw new InvalidOperationException("Instantiation via the default parameterless constructor is prohibited.");
-	}
+	private ReleaseDate() { }
 
 	private ReleaseDate(DateOnly value) => Value = value;
 

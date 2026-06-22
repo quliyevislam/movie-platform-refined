@@ -3,14 +3,11 @@ using MoviePlatform.Domain.Movies.Enums;
 
 namespace MoviePlatform.Domain.Movies.ValueObjects;
 
-public readonly record struct Genre
+public record Genre
 {
-	public GenreType Value { get; }
+	public GenreType Value { get; } = GenreType.Unknown;
 
-	public Genre()
-	{
-		throw new InvalidOperationException("Instantiation via the default parameterless constructor is prohibited.");
-	}
+	private Genre() { }
 
 	private Genre(GenreType value)
 	{

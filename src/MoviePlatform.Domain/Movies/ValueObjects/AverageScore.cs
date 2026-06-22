@@ -2,14 +2,11 @@ using MoviePlatform.Domain.Common;
 
 namespace MoviePlatform.Domain.Movies.ValueObjects;
 
-public readonly record struct AverageScore
+public record AverageScore
 {
 	public double Value { get; }
 
-	public AverageScore()
-	{
-		throw new InvalidOperationException("Instantiation via the default parameterless constructor is prohibited.");
-	}
+	private AverageScore() { }
 
 	private AverageScore(double value) => Value = value;
 

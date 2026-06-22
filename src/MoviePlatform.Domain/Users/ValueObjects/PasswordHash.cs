@@ -2,14 +2,11 @@ using MoviePlatform.Domain.Common;
 
 namespace MoviePlatform.Domain.Users.ValueObjects;
 
-public readonly record struct PasswordHash
+public record PasswordHash
 {
-	public string Value { get; }
+	public string Value { get; } = default!;
 
-	public PasswordHash()
-	{
-		throw new InvalidOperationException("Instantiation via the default parameterless constructor is prohibited.");
-	}
+	private PasswordHash() { }
 
 	private PasswordHash(string value) => Value = value;
 
