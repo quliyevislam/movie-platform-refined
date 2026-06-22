@@ -74,10 +74,10 @@ internal sealed class MovieConfiguration : IEntityTypeConfiguration<Movie>
 		builder
 			.Property(movie => movie.ReleaseDate)
 			.HasColumnName("release_date")
-			.IsRequired(false)
+			.IsRequired()
 			.HasColumnType("date")
 			.HasConversion(
-				releaseDate => releaseDate == null ? default : releaseDate.Value,
+				releaseDate => releaseDate!.Value,
 				value => ReleaseDate.FromPersistence(value));
 
 		builder

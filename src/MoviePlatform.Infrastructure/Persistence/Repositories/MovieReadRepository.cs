@@ -164,7 +164,7 @@ public sealed class MovieReadRepository : IMovieReadRepository
 		int page,
 		int pageSize)
 	{
-		int totalCount = rowList.Count > 0 ? rowList[0].TotalCount : 0;
+		long totalCount = rowList.Count > 0 ? rowList[0].TotalCount : 0;
 		List<MovieResponse> movies = rowList
 			.Select(row => new MovieResponse(
 				row.MovieId,
@@ -191,5 +191,5 @@ sealed record MovieReadRow(
 	DateOnly ReleaseDate,
 	double AverageScore,
 	int ReviewCount,
-	DateTimeOffset CreatedAtUtc,
-	int TotalCount);
+	DateTime CreatedAtUtc,
+	long TotalCount);
