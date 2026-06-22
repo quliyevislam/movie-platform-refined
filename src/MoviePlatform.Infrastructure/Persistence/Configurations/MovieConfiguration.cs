@@ -61,7 +61,7 @@ internal sealed class MovieConfiguration : IEntityTypeConfiguration<Movie>
 			.IsRequired(false)
 			.HasMaxLength(MovieConstants.Description.MaxLength)
 			.HasConversion(
-				description => description.Value,
+				description => description == null ? null : description.Value,
 				value => Description.FromPersistence(value));
 
 		builder
@@ -77,7 +77,7 @@ internal sealed class MovieConfiguration : IEntityTypeConfiguration<Movie>
 			.IsRequired(false)
 			.HasColumnType("date")
 			.HasConversion(
-				releaseDate => releaseDate.Value,
+				releaseDate => releaseDate == null ? default : releaseDate.Value,
 				value => ReleaseDate.FromPersistence(value));
 
 		builder
