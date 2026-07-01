@@ -2,6 +2,9 @@ namespace MoviePlatform.Domain.Movies;
 
 public static class MovieConstants
 {
+	public const int DefaultPage = 1;
+	public const int DefaultPageSize = 10;
+
 	public static class Title
 	{
 		public static readonly int MaxLength = 255;

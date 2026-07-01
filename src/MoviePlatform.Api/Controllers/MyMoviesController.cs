@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using MoviePlatform.Api.Requests.Movies;
 using MoviePlatform.Domain.Common;
+using MoviePlatform.Domain.Movies;
 using MoviePlatform.Application.Movies;
 using MoviePlatform.Application.Movies.Commands.CreateMovie;
 using MoviePlatform.Application.Movies.Queries.GetMovieByIdAndUserId;
@@ -60,9 +61,9 @@ public sealed class MyMoviesController : ApiController
 
 	[HttpGet]
 	public async Task<IActionResult> GetMoviesPaged(
-		[FromQuery] int page,
-		[FromQuery] int pageSize,
-		CancellationToken cancellationToken)
+		CancellationToken cancellationToken = default,
+		[FromQuery] int page = MovieConstants.DefaultPage,
+		[FromQuery] int pageSize = MovieConstants.DefaultPageSize)
 	{
 		var query = new GetMoviesPagedByUserIdQuery(
 				GetUserId(),
