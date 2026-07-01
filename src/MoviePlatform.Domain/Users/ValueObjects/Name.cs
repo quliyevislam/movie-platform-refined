@@ -12,16 +12,11 @@ public record Name
 
 	public static Result<Name> Create(string? value)
 	{
-		if (value is null)
+		string? trimmedValue = value?.Trim();
+
+		if (string.IsNullOrEmpty(trimmedValue))
 		{
 			return Result.Failure<Name>(UserErrors.Name.Required);
-		}
-
-		string trimmedValue = value.Trim();
-
-		if (trimmedValue.Length == 0)
-		{
-			return Result.Failure<Name>(UserErrors.Name.Empty);
 		}
 
 		if (trimmedValue.Length > UserConstants.Name.MaxLength)

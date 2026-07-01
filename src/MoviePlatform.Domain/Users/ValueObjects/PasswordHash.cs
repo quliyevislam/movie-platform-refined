@@ -12,14 +12,9 @@ public record PasswordHash
 
 	public static Result<PasswordHash> Create(string? value)
 	{
-		if (value is null)
+		if (string.IsNullOrWhiteSpace(value))
 		{
 			return Result.Failure<PasswordHash>(UserErrors.PasswordHash.Required);
-		}
-
-		if (value.Length == 0)
-		{
-			return Result.Failure<PasswordHash>(UserErrors.PasswordHash.Empty);
 		}
 
 		return Result.Success<PasswordHash>(new(value));

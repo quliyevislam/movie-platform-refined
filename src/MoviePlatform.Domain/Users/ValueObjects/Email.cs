@@ -13,16 +13,11 @@ public record Email
 
 	public static Result<Email> Create(string? value)
 	{
-		if (value is null)
+		string? trimmedValue = value?.Trim();
+
+		if (string.IsNullOrEmpty(trimmedValue))
 		{
 			return Result.Failure<Email>(UserErrors.Email.Required);
-		}
-
-		string trimmedValue = value.Trim();
-
-		if (trimmedValue.Length == 0)
-		{
-			return Result.Failure<Email>(UserErrors.Email.Empty);
 		}
 
 		List<Error> errors = new();

@@ -25,7 +25,7 @@ public record Genre
 
 		if (!Enum.TryParse<GenreType>(trimmedValue, true, out var genreType) || !Enum.IsDefined(typeof(GenreType), genreType))
 		{
-			return Result.Failure<Genre>(MovieErrors.Genre.Invalid);
+			return Result.Failure<Genre>(MovieErrors.Genre.OutOfBounds);
 		}
 
 		return Result.Success<Genre>(new(genreType));

@@ -13,14 +13,9 @@ public record Password
 
 	public static Result<Password> Create(string? value)
 	{
-		if (value is null)
+		if (string.IsNullOrEmpty(value))
 		{
 			return Result.Failure<Password>(UserErrors.Password.Required);
-		}
-
-		if (value.Length == 0)
-		{
-			return Result.Failure<Password>(UserErrors.Password.Empty);
 		}
 
 		List<Error> errors = new();

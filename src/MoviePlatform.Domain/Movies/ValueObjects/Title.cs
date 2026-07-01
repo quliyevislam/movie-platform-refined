@@ -12,16 +12,11 @@ public record Title
 
 	public static Result<Title> Create(string? value)
 	{
-		if (value is null)
+		string? trimmedValue = value?.Trim();
+
+		if (string.IsNullOrEmpty(trimmedValue))
 		{
 			return Result.Failure<Title>(MovieErrors.Title.Required);
-		}
-
-		string trimmedValue = value.Trim();
-
-		if (trimmedValue.Length == 0)
-		{
-			return Result.Failure<Title>(MovieErrors.Title.Empty);
 		}
 
 		if (trimmedValue.Length > MovieConstants.Title.MaxLength)

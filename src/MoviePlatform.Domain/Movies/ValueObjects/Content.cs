@@ -12,16 +12,11 @@ public record Content
 
 	public static Result<Content> Create(string? value)
 	{
-			if (value is null)
+			string? trimmedValue = value?.Trim();
+
+			if (string.IsNullOrEmpty(trimmedValue))
 			{
 				return Result.Failure<Content>(MovieErrors.Content.Required);
-			}
-
-			string trimmedValue = value.Trim();
-
-			if (trimmedValue.Length == 0)
-			{
-				return Result.Failure<Content>(MovieErrors.Content.Empty);
 			}
 
 			if (trimmedValue.Length > MovieConstants.Content.MaxLength)
