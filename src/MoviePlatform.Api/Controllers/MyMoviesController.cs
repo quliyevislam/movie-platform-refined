@@ -68,6 +68,23 @@ public sealed class MyMoviesController : ApiController
 		return Ok(result.Value);
 	}
 
+	[HttpDelete("{movieId:guid}")]
+	public async Task<IActionResult> DeleteMovie(
+		Guid movieId,
+		CancellationToken cancellationToken)
+	{
+		var command = new DeleteMovieCommand(GetUserId(), movieId);
+
+		Result result = await Sender.Send(command, cancellationToken);
+
+		if (result.IsFailure)
+		{
+			return HandleFailure(result);
+		}
+
+		return Ok();
+	}
+
 	[HttpGet("{movieId:guid}")]
     public async Task<IActionResult> GetMovieByIdAndUserId(
         Guid movieId,
