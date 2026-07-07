@@ -6,6 +6,8 @@ using MoviePlatform.Domain.Common;
 using MoviePlatform.Domain.Movies;
 using MoviePlatform.Application.Movies;
 using MoviePlatform.Application.Movies.Commands.CreateMovie;
+using MoviePlatform.Application.Movies.Commands.UpdateMovie;
+using MoviePlatform.Application.Movies.Commands.DeleteMovie;
 using MoviePlatform.Application.Movies.Queries.GetMovieByIdAndUserId;
 using MoviePlatform.Application.Movies.Queries.GetMoviesPagedByUserId;
 
@@ -41,6 +43,30 @@ public sealed class MyMoviesController : ApiController
             new { movieId = result.Value },
             result.Value);
     }
+
+	[HttpPut("{movieId:guid}")]
+	public async Task<IActionResult> UpdateMovie(
+		Guid movieId,
+		UpdateMovieRequest request,
+		CancellationToken cancellationToken)
+	{
+		var command = new UpdateMovieCommand(
+			GetUserId(),
+			movieId,
+			request.Title,
+			request.Description,
+			request.Genre,
+			request.ReleaseDate);
+
+		Result<Guid> result = await Sender.Send(command, cancellationToken);
+
+		if (result.IsFailure)
+		{
+			return HandleFailure(result);
+		}
+
+		return Ok(result.Value);
+	}
 
 	[HttpGet("{movieId:guid}")]
     public async Task<IActionResult> GetMovieByIdAndUserId(
