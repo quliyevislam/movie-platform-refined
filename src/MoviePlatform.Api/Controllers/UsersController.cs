@@ -7,6 +7,7 @@ using MoviePlatform.Application.Users.Commands.Login;
 
 namespace MoviePlatform.Api.Controllers;
 
+[Route("api/auth")]
 public sealed class UsersController : ApiController
 {
 	public UsersController(ISender sender) : base(sender) { }

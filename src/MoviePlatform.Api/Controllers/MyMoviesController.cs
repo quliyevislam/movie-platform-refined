@@ -37,13 +37,13 @@ public sealed class MyMoviesController : ApiController
         }
 
         return CreatedAtAction(
-            nameof(GetMovieById),
+            nameof(GetMovieByIdAndUserId),
             new { movieId = result.Value },
             result.Value);
     }
 
 	[HttpGet("{movieId:guid}")]
-    public async Task<IActionResult> GetMovieById(
+    public async Task<IActionResult> GetMovieByIdAndUserId(
         Guid movieId,
         CancellationToken cancellationToken)
     {

@@ -38,9 +38,8 @@ public abstract class ApiController : ControllerBase
 		};
 
 		return Problem(
+			title: "One or more errors occurred.",
 			statusCode: statusCode,
-			title: result.Errors[0].Code,
-			detail: result.Errors[0].Description,
 			extensions: new Dictionary<string, object?>
 			{
 				["errors"] = result.Errors.Select(error => new { error.Code, error.Description }).ToList()
