@@ -60,7 +60,7 @@ public sealed class MyMoviesController : ApiController
     }
 
 	[HttpGet]
-	public async Task<IActionResult> GetMoviesPaged(
+	public async Task<IActionResult> GetMoviesPagedByUserId(
 		CancellationToken cancellationToken = default,
 		[FromQuery] int page = MovieConstants.DefaultPage,
 		[FromQuery] int pageSize = MovieConstants.DefaultPageSize)
