@@ -9,8 +9,8 @@ A REST API for browsing, reviewing, and managing movies — built as a hands-on 
 The solution follows **Clean Architecture**, with dependencies flowing strictly inward:
 
 ```
-MoviePlatform.Api  ─┐
-                     ├──▶ MoviePlatform.Application ──▶ MoviePlatform.Domain
+MoviePlatform.Api ────────────┐
+                              ├──▶ MoviePlatform.Application ──▶ MoviePlatform.Domain
 MoviePlatform.Infrastructure ─┘
 ```
 
@@ -63,7 +63,7 @@ MoviePlatform.Infrastructure ─┘
 
 Full interactive documentation is available via **Swagger UI** once the API is running (see below).
 
-### 📝 Comments & Reviews *(planned)*
+### 📝 Comments & Reviews
 
 The `Comment` and `Review` domain entities already exist under `MoviePlatform.Domain.Movies.Entities`, but the corresponding controllers and CQRS handlers aren't wired up yet. Once implemented, they'll follow the same ownership-scoped convention as movies — reads are public, writes require a JWT and are scoped to the authenticated user:
 
@@ -75,7 +75,6 @@ The `Comment` and `Review` domain entities already exist under `MoviePlatform.Do
 | `DELETE` | `/api/movies/{movieId}/comments/{commentId}` | ✅ | Delete a comment you own |
 | `GET` | `/api/movies/{movieId}/reviews` | – | List reviews for a movie |
 | `POST` | `/api/movies/{movieId}/reviews` | ✅ | Submit a review (score) for a movie — creates it if none exists yet, otherwise updates your existing review |
-| `DELETE` | `/api/movies/{movieId}/reviews/{reviewId}` | ✅ | Delete a review you own |
 
 > As with movies, ownership will be enforced via `MovieErrors.Forbidden`, using the `UserId` extracted from the JWT (`GetUserId()`) rather than trusting a value from the request body or route.
 
