@@ -65,8 +65,6 @@ Full interactive documentation is available via **Swagger UI** once the API is r
 
 ### 📝 Comments & Reviews
 
-The `Comment` and `Review` domain entities already exist under `MoviePlatform.Domain.Movies.Entities`, but the corresponding controllers and CQRS handlers aren't wired up yet. Once implemented, they'll follow the same ownership-scoped convention as movies — reads are public, writes require a JWT and are scoped to the authenticated user:
-
 | Method | Route | Auth | Description |
 |---|---|---|---|
 | `GET` | `/api/movies/{movieId}/comments` | – | List comments for a movie |
