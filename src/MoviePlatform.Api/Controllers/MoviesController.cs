@@ -5,6 +5,7 @@ using MoviePlatform.Domain.Common;
 using MoviePlatform.Domain.Movies;
 using MoviePlatform.Application.Movies.Queries.GetMovieById;
 using MoviePlatform.Application.Movies.Queries.GetMoviesPaged;
+using MoviePlatform.Application.Movies.Queries.GetReviewsPagedByMovieId;
 using MoviePlatform.Application.Movies.Commands.SubmitReview;
 using MoviePlatform.Application.Movies;
 using MoviePlatform.Api.Requests.Movies;
@@ -75,6 +76,25 @@ public sealed class MoviesController : ApiController
   //           nameof(GetMovieByIdAndUserId),
   //           new { movieId = result.Value },
   //           result.Value);
+
+		return Ok(result.Value);
+	}
+
+	[HttpGet("{movieId:guid}/reviews")]
+	public async Task<IActionResult> GetReviewsPagedByMovieId(
+		Guid movieId,
+		[FromQuery] int page = MovieConstants.DefaultPage,
+		[FromQuery] int pageSize = MovieConstants.DefaultPageSize,
+		CancellationToken cancellationToken = default)
+	{
+		var query = new GetReviewsPagedByMovieIdQuery(movieId, page, pageSize);
+
+		Result<PagedList<ReviewResponse>> result = await Sender.Send(query, cancellationToken);
+
+		if (result.IsFailure)
+		{
+			return HandleFailure(result);
+		}
 
 		return Ok(result.Value);
 	}

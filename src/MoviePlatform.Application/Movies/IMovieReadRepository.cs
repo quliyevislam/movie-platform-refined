@@ -23,4 +23,10 @@ public interface IMovieReadRepository
 		int page,
 		int pageSize,
 		CancellationToken cancellationToken = default);
+
+	Task<PagedList<ReviewResponse>> GetReviewsPagedByMovieIdAsync(
+		Guid movieId,
+		int page,
+		int pageSize,
+		CancellationToken cancellationToken = default);
 }

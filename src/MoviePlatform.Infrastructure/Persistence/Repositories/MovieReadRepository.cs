@@ -117,7 +117,7 @@ public sealed class MovieReadRepository : IMovieReadRepository
 			cancellationToken: cancellationToken);
 		IEnumerable<MovieReadRow> rows = await connection.QueryAsync<MovieReadRow>(command);
 
-		return MapToPagedList(rows.ToList(), page, pageSize);
+		return MapToMovieResponsePagedList(rows.ToList(), page, pageSize);
 	}
 
 	public async Task<PagedList<MovieResponse>> GetPagedAsync(
@@ -156,10 +156,49 @@ public sealed class MovieReadRepository : IMovieReadRepository
 			cancellationToken: cancellationToken);
 		IEnumerable<MovieReadRow> rows = await connection.QueryAsync<MovieReadRow>(command);
 
-		return MapToPagedList(rows.ToList(), page, pageSize);
+		return MapToMovieResponsePagedList(rows.ToList(), page, pageSize);
 	}
 
-	private static PagedList<MovieResponse> MapToPagedList(
+	
+	public async Task<PagedList<ReviewResponse>> GetReviewsPagedByMovieIdAsync(
+		Guid movieId,
+		int page,
+		int pageSize,
+		CancellationToken cancellationToken = default)
+	{		
+		using IDbConnection connection = _sqlConnectionFactory.CreateConnection();
+
+		const string sql = """
+			SELECT
+				review_id		AS ReviewId,
+				user_id			AS UserId,
+				movie_id		AS MovieId,
+				score			AS Score,
+				created_at_utc	AS CreatedAtUtc,
+				COUNT(*) OVER()	AS TotalCount
+			FROM reviews
+			WHERE movie_id = @MovieId
+			ORDER BY created_at_utc DESC
+			LIMIT @PageSize OFFSET @Offset;
+			""";
+
+		var parameters = new
+		{
+			MovieId = movieId,
+			PageSize = pageSize,
+			Offset = (page - 1) * pageSize
+		};
+		
+		CommandDefinition command = new CommandDefinition(
+			sql,
+			parameters,
+			cancellationToken: cancellationToken);
+		IEnumerable<ReviewReadRow> rows = await connection.QueryAsync<ReviewReadRow>(command);
+
+		return MapToReviewResponsePagedList(rows.ToList(), page, pageSize);
+	}
+
+	private static PagedList<MovieResponse> MapToMovieResponsePagedList(
 		List<MovieReadRow> rowList,
 		int page,
 		int pageSize)
@@ -180,6 +219,24 @@ public sealed class MovieReadRepository : IMovieReadRepository
 
 		return PagedList<MovieResponse>.Create(movies, page, pageSize, totalCount);
 	}
+
+	private static PagedList<ReviewResponse> MapToReviewResponsePagedList(
+		List<ReviewReadRow> rowList,
+		int page,
+		int pageSize)
+	{
+		long totalCount = rowList.Count > 0 ? rowList[0].TotalCount : 0;
+		List<ReviewResponse> reviews = rowList
+			.Select(row => new ReviewResponse(
+				row.ReviewId,
+				row.UserId,
+				row.MovieId,
+				row.Score,
+				row.CreatedAtUtc))
+			.ToList();
+
+		return PagedList<ReviewResponse>.Create(reviews, page, pageSize, totalCount);
+	}
 }
 
 sealed record MovieReadRow(
@@ -191,5 +248,13 @@ sealed record MovieReadRow(
 	DateOnly ReleaseDate,
 	double AverageScore,
 	int ReviewCount,
+	DateTime CreatedAtUtc,
+	long TotalCount);
+
+sealed record ReviewReadRow(
+	Guid ReviewId,
+	Guid UserId,
+	Guid MovieId,
+	int Score,
 	DateTime CreatedAtUtc,
 	long TotalCount);
