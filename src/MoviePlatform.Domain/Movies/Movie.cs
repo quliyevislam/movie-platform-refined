@@ -129,4 +129,23 @@ public sealed class Movie : AggregateRoot<MovieId>
 
 		return Result.Success();
 	}
+
+	public Result<Guid> UpdateComment(CommentId commentId, UserId userId, Content content)
+	{
+		Comment? existingComment = _comments.FirstOrDefault(comment => comment.Id == commentId);
+
+		if (existingComment is null)
+		{
+			return Result.Failure<Guid>(MovieErrors.Comment.NotFound);
+		}
+
+		if (existingComment.UserId != userId)
+		{
+			return Result.Failure<Guid>(MovieErrors.Comment.Forbidden);
+		}
+
+		existingComment.UpdateContent(content);
+
+		return Result.Success<Guid>(existingComment.Id.Value);
+	}
 }

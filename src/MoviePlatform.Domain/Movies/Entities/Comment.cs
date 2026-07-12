@@ -33,4 +33,9 @@ public sealed class Comment : BaseEntity<CommentId>
 			content,
 			currentUtcTime);
 	}
+
+	public void UpdateContent(Content content)
+	{
+		Content = content;
+	}
 }

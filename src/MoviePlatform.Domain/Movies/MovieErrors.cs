@@ -8,6 +8,14 @@ public static class MovieErrors
 		"Movie.NotFound",
 		"The movie with the specified id was not found.");
 
+	public static readonly Error ReviewNotFound = Error.NotFound(
+		"Movie.ReviewNotFound",
+		"The review with the specified id was not found.");
+
+	public static readonly Error CommentNotFound = Error.NotFound(
+		"Movie.CommentNotFound",
+		"The comment with the specified id was not found.");
+	
 	public static readonly Error Forbidden = Error.Forbidden(
 		"Movie.Forbidden",
 		"You do not have permission to modify this movie.");
