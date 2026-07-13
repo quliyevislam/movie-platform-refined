@@ -143,7 +143,7 @@ public sealed class MoviesController : ApiController
 	}
 
 	[Authorize]
-	[HttpPost("{movieId:guid}/comments/{commentId:guid}")]
+	[HttpPut("{movieId:guid}/comments/{commentId:guid}")]
 	public async Task<IActionResult> UpdateComment(
 		Guid movieId,
 		Guid commentId,
